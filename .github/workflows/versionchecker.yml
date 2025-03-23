@@ -1,0 +1,29 @@
+name: Check Version on Server
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up SSH keys
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -t rsa your-server.com >> ~/.ssh/known_hosts
+
+    - name: Check Node.js version on server
+      run: |
+        ssh -o StrictHostKeyChecking=no your-user@your-server.com 'node -v'
+
