@@ -1,0 +1,22 @@
+name: Check Software Version
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Check Node.js version
+      run: |
+        echo "Checking Node.js version..."
+        node -v
